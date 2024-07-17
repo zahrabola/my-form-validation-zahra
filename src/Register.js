@@ -17,7 +17,7 @@ const Register = () => {
 
   const [password, setPassword] = useState(""); //tied to password input
   const [validPassword, setValidPassword] = useState(false); //boolean , tied to password validation
-  const [paasswordFocus, setPasswordFocus] = useState(false); // boolean , focused on the password input field
+  const [passwordFocus, setPasswordFocus] = useState(false); // boolean , focused on the password input field
 
   const [matchpassword, setMatchPassword] = useState(""); //tied to match password input
   const [validMatch, setValidMatch] = useState(false); //boolean , tied to password validation
@@ -55,6 +55,7 @@ const Register = () => {
   useEffect(() => {
     setErrorMsg("");
   }, [user, password, matchpassword]);
+
   return (
     <div>
       <section>
@@ -103,47 +104,85 @@ const Register = () => {
           </>
           <>
             <label htmlFor="password">
-              password:
-              <FaCheck className={validPassword ? "valid" : "hide"} />
-              <FaTimes
-                className={validPassword || !password ? "hide" : "invalid"}
-              />
+              Password:
+          <FaCheck className={validPassword ? "valid" : "hide"} />
+              <FaTimes className={validPassword || !password ? "hide" : "invalid"} /> 
             </label>
-
             <input
-              type="text"
+              type="password"
               id="password"
-              autoComplete="off"
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
               required
-              aria-describedby="uidnote"
               aria-invalid={validPassword ? "false" : "true"}
-              onChange={(event) => setPassword(event.target.value)}
+              aria-describedby="pwdnote"
               onFocus={() => setPasswordFocus(true)}
               onBlur={() => setPasswordFocus(false)}
             />
             <p
               id="pwdnote"
               className={
-                paasswordFocus && !validPassword ? "instructions" : "offscreen"
+                setPasswordFocus && !validPassword
+                  ? "instructions"
+                  : "offscreen"
+              }
+            >
+           <FaInfoCircle />
+              8 to 24 characters.
+              <br />
+              Must include uppercase and lowercase letters, a number and a
+              special character.
+              <br />
+              Allowed special characters:{" "}
+              <span aria-label="exclamation mark">!</span>{" "}
+              <span aria-label="at symbol">@</span>{" "}
+              <span aria-label="hashtag">#</span>{" "}
+              <span aria-label="dollar sign">$</span>{" "}
+              <span aria-label="percent">%</span>
+            </p>
+          </>
+
+          <>
+            <label htmlFor="confirm_password">
+              Confirm password:
+              <FaCheck
+                className={validMatch && matchpassword ? "valid" : "hide"}
+              />
+              <FaTimes
+                className={validMatch || !matchpassword ? "hide" : "invalid"}
+              />
+            </label>
+
+            <input
+              type="password"
+              id="confirm_pwd"
+              onChange={(e) => setMatchPassword(e.target.value)}
+              value={matchpassword}
+              required
+              aria-invalid={validMatch ? "false" : "true"}
+              aria-describedby="confirmnote"
+              onFocus={() => setMatchFocus(true)}
+              onBlur={() => setMatchFocus(false)}
+            />
+
+            <p
+              id="confirmnote"
+              className={
+                matchFocus && !validMatch ? "instructions" : "offscreen"
               }
             >
               <FaInfoCircle />
-              <small>
-                8 to 24 characters.
-                <br />
-                Must include uppercase and lowercase letters, a number and a
-                special character.
-                <br />
-                Allowed special characters:{" "}
-                <span aria-label="exclamation mark">!</span>{" "}
-                <span aria-label="at symbol">@</span>{" "}
-                <span aria-label="hashtag">#</span>{" "}
-                <span aria-label="dollar sign">$</span>{" "}
-                <span aria-label="percent">%</span>
-              </small>
+              <small>Must match the first password input field.</small>
             </p>
           </>
+          <button
+            disabled={
+              !validName || validPassword || !validMatch ? true : false
+            }
+          >
+            {" "}
+            Sign Up{" "}
+          </button>
         </form>
       </section>
     </div>
