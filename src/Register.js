@@ -2,9 +2,16 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
+import axios from "./api/axios";
+///https://github.com/gitdagray/react_register_form/blob/main/src/Register.js
+
+
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+//new - for the axios section
+const REGISTER_URL = "/register";
 
 const Register = () => {
   //state and hooks
@@ -56,8 +63,8 @@ const Register = () => {
     setErrorMsg("");
   }, [user, password, matchpassword]);
 
-  //handlesubmit
-  const handleSubmit = async (event) => {
+  //handlesubmit - for beginners
+  /* const handleSubmit = async (event) => {
     event.preventDefault();
     ////if Button enabled with JS Hack
     const v1 = USER_REGEX.test(user);
@@ -68,13 +75,53 @@ const Register = () => {
     }
     console.log(user, password);
     setSuccess(true); // success
+  };*/
+
+  ///handle submit adding axios
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    ////if Button enabled with JS Hack
+    const v1 = USER_REGEX.test(user);
+    const v2 = PWD_REGEX.test(password);
+    if (!v1 || !v2) {
+      setErrorMsg("Invalid Entry");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        JSON.stringify({ user, password }),
+        /* JSON.stringify({user: userName, password: userPassword}) if the state name is differ and user property that backend is looking for */
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+      console.log(response.accessToken)
+      console.log(JSON.stringify(response))
+      setSuccess(true)
+       //clear state and controlled inputs
+            //need value attrib on inputs for this
+    } catch (error) {
+      if(!error?.response){
+        setErrorMsg('No Server Response');
+
+      } else if ( error.response?.status === 409){
+        setErrorMsg('Username Taken')
+      } else {
+        setErrorMsg( 'Registration Failed ')
+      }
+      console.log(error);
+      errorRef.current.focus()
+    }
   };
 
   return (
     <>
       {success ? (
         <section>
-          <h1>succes!</h1>
+          <h1>Success!</h1>
           <p>
             <a href="#">Sign In</a>
           </p>
@@ -151,7 +198,7 @@ const Register = () => {
                 <p
                   id="pwdnote"
                   className={
-                    setPasswordFocus && !validPassword
+                   passwordFocus && !validPassword
                       ? "instructions"
                       : "offscreen"
                   }
@@ -231,3 +278,4 @@ const Register = () => {
 };
 
 export default Register;
+///https://github.com/juliamachin/tracker-client/tree/main - helful 
