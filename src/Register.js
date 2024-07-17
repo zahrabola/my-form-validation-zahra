@@ -56,136 +56,177 @@ const Register = () => {
     setErrorMsg("");
   }, [user, password, matchpassword]);
 
+  //handlesubmit
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    ////if Button enabled with JS Hack
+    const v1 = USER_REGEX.test(user);
+    const v2 = PWD_REGEX.test(password);
+    if (!v1 || !v2) {
+      setErrorMsg("Invalid Entry");
+      return;
+    }
+    console.log(user, password);
+    setSuccess(true); // success
+  };
+
   return (
-    <div>
-      <section>
-        <p ref={errorRef} className={errorMsg ? "errorMsg" : "offscreen"}>
-          {" "}
-          {errorMsg}
-        </p>
-        <h1>Register</h1>
-
-        <form>
-          <>
-            <label htmlFor="username">
-              Username:
-              <FaCheck className={validName ? "valid" : "hide"} />
-              <FaTimes className={validName || !user ? "hide" : "invalid"} />
-            </label>
-            <input
-              type="text"
-              id="username"
-              ref={userRef}
-              autoComplete="off"
-              value={user}
-              required
-              aria-describedby="uidnote"
-              aria-invalid={validName ? "false" : "true"}
-              onChange={(event) => setUser(event.target.value)}
-              onFocus={() => setUserFocus(true)}
-              onBlur={() => setUserFocus(false)}
-            />
-
-            <p
-              id="uidnote"
-              className={
-                userFocus && user && !validName ? "instructions" : "offscreen"
-              }
-            >
-              <FaInfoCircle />
-              <small>
-                4 to 24 characters.
-                <br />
-                Must begin with a letter.
-                <br />
-                Letters, numbers, underscores, hyphens allowed.
-              </small>
+    <>
+      {success ? (
+        <section>
+          <h1>succes!</h1>
+          <p>
+            <a href="#">Sign In</a>
+          </p>
+        </section>
+      ) : (
+        <div>
+          <section>
+            <p ref={errorRef} className={errorMsg ? "errorMsg" : "offscreen"}>
+              {" "}
+              {errorMsg}
             </p>
-          </>
-          <>
-            <label htmlFor="password">
-              Password:
-          <FaCheck className={validPassword ? "valid" : "hide"} />
-              <FaTimes className={validPassword || !password ? "hide" : "invalid"} /> 
-            </label>
-            <input
-              type="password"
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
-              aria-invalid={validPassword ? "false" : "true"}
-              aria-describedby="pwdnote"
-              onFocus={() => setPasswordFocus(true)}
-              onBlur={() => setPasswordFocus(false)}
-            />
-            <p
-              id="pwdnote"
-              className={
-                setPasswordFocus && !validPassword
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-           <FaInfoCircle />
-              8 to 24 characters.
+            <h1>Register</h1>
+
+            <form onSubmit={handleSubmit}>
+              <>
+                <label htmlFor="username">
+                  Username:
+                  <FaCheck className={validName ? "valid" : "hide"} />
+                  <FaTimes
+                    className={validName || !user ? "hide" : "invalid"}
+                  />
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  ref={userRef}
+                  autoComplete="off"
+                  value={user}
+                  required
+                  aria-describedby="uidnote"
+                  aria-invalid={validName ? "false" : "true"}
+                  onChange={(event) => setUser(event.target.value)}
+                  onFocus={() => setUserFocus(true)}
+                  onBlur={() => setUserFocus(false)}
+                />
+
+                <p
+                  id="uidnote"
+                  className={
+                    userFocus && user && !validName
+                      ? "instructions"
+                      : "offscreen"
+                  }
+                >
+                  <FaInfoCircle />
+                  <small>
+                    4 to 24 characters.
+                    <br />
+                    Must begin with a letter.
+                    <br />
+                    Letters, numbers, underscores, hyphens allowed.
+                  </small>
+                </p>
+              </>
+              <>
+                <label htmlFor="password">
+                  Password:
+                  <FaCheck className={validPassword ? "valid" : "hide"} />
+                  <FaTimes
+                    className={validPassword || !password ? "hide" : "invalid"}
+                  />
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  required
+                  aria-invalid={validPassword ? "false" : "true"}
+                  aria-describedby="pwdnote"
+                  onFocus={() => setPasswordFocus(true)}
+                  onBlur={() => setPasswordFocus(false)}
+                />
+                <p
+                  id="pwdnote"
+                  className={
+                    setPasswordFocus && !validPassword
+                      ? "instructions"
+                      : "offscreen"
+                  }
+                >
+                  <FaInfoCircle />
+                  8 to 24 characters.
+                  <br />
+                  Must include uppercase and lowercase letters, a number and a
+                  special character.
+                  <br />
+                  Allowed special characters:{" "}
+                  <span aria-label="exclamation mark">!</span>{" "}
+                  <span aria-label="at symbol">@</span>{" "}
+                  <span aria-label="hashtag">#</span>{" "}
+                  <span aria-label="dollar sign">$</span>{" "}
+                  <span aria-label="percent">%</span>
+                </p>
+              </>
+
+              <>
+                <label htmlFor="confirm_password">
+                  Confirm password:
+                  <FaCheck
+                    className={validMatch && matchpassword ? "valid" : "hide"}
+                  />
+                  <FaTimes
+                    className={
+                      validMatch || !matchpassword ? "hide" : "invalid"
+                    }
+                  />
+                </label>
+
+                <input
+                  type="password"
+                  id="confirm_pwd"
+                  onChange={(e) => setMatchPassword(e.target.value)}
+                  value={matchpassword}
+                  required
+                  aria-invalid={validMatch ? "false" : "true"}
+                  aria-describedby="confirmnote"
+                  onFocus={() => setMatchFocus(true)}
+                  onBlur={() => setMatchFocus(false)}
+                />
+
+                <p
+                  id="confirmnote"
+                  className={
+                    matchFocus && !validMatch ? "instructions" : "offscreen"
+                  }
+                >
+                  <FaInfoCircle />
+                  <small>Must match the first password input field.</small>
+                </p>
+              </>
+              <button
+                disabled={
+                  !validName || validPassword || !validMatch ? true : false
+                }
+              >
+                {" "}
+                Sign Up{" "}
+              </button>
+            </form>
+            <p>
+              Already registered?
               <br />
-              Must include uppercase and lowercase letters, a number and a
-              special character.
-              <br />
-              Allowed special characters:{" "}
-              <span aria-label="exclamation mark">!</span>{" "}
-              <span aria-label="at symbol">@</span>{" "}
-              <span aria-label="hashtag">#</span>{" "}
-              <span aria-label="dollar sign">$</span>{" "}
-              <span aria-label="percent">%</span>
+              <span className="line">
+                {/*put router link here*/}
+                <a href="/">Sign In</a>
+              </span>
             </p>
-          </>
-
-          <>
-            <label htmlFor="confirm_password">
-              Confirm password:
-              <FaCheck
-                className={validMatch && matchpassword ? "valid" : "hide"}
-              />
-              <FaTimes
-                className={validMatch || !matchpassword ? "hide" : "invalid"}
-              />
-            </label>
-
-            <input
-              type="password"
-              id="confirm_pwd"
-              onChange={(e) => setMatchPassword(e.target.value)}
-              value={matchpassword}
-              required
-              aria-invalid={validMatch ? "false" : "true"}
-              aria-describedby="confirmnote"
-              onFocus={() => setMatchFocus(true)}
-              onBlur={() => setMatchFocus(false)}
-            />
-
-            <p
-              id="confirmnote"
-              className={
-                matchFocus && !validMatch ? "instructions" : "offscreen"
-              }
-            >
-              <FaInfoCircle />
-              <small>Must match the first password input field.</small>
-            </p>
-          </>
-          <button
-            disabled={
-              !validName || validPassword || !validMatch ? true : false
-            }
-          >
-            {" "}
-            Sign Up{" "}
-          </button>
-        </form>
-      </section>
-    </div>
+          </section>
+        </div>
+      )}
+    </>
   );
 };
 
