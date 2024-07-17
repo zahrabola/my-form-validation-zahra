@@ -65,44 +65,87 @@ const Register = () => {
         <h1>Register</h1>
 
         <form>
-            <>
-            <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            ref={userRef}
-            autoComplete="off"
-            value={user}
-            required
-            aria-describedby="uidnote"
-            aria-invalid={validName ? "false" : "true"}
-            onChange={(event) => setUser(event.target.value)}
-            onFocus={() => setUserFocus(true)}
-            onBlur={() => setUserFocus(false)}
-          />
+          <>
+            <label htmlFor="username">
+              Username:
+              <FaCheck className={validName ? "valid" : "hide"} />
+              <FaTimes className={validName || !user ? "hide" : "invalid"} />
+            </label>
+            <input
+              type="text"
+              id="username"
+              ref={userRef}
+              autoComplete="off"
+              value={user}
+              required
+              aria-describedby="uidnote"
+              aria-invalid={validName ? "false" : "true"}
+              onChange={(event) => setUser(event.target.value)}
+              onFocus={() => setUserFocus(true)}
+              onBlur={() => setUserFocus(false)}
+            />
 
-          <p
-            id="uidnote"
-            className={
-              userFocus && user && !validName ? "instructions" : "offscreen"
-            }
-          >
-            <FaInfoCircle />
-            <small>
-              4 to 24 characters.
-              <br />
-              Must begin with a letter.
-              <br />
-              Letters, numbers, underscores, hyphens allowed.
-            </small>
-          </p>
-            </>
-         
+            <p
+              id="uidnote"
+              className={
+                userFocus && user && !validName ? "instructions" : "offscreen"
+              }
+            >
+              <FaInfoCircle />
+              <small>
+                4 to 24 characters.
+                <br />
+                Must begin with a letter.
+                <br />
+                Letters, numbers, underscores, hyphens allowed.
+              </small>
+            </p>
+          </>
+          <>
+            <label htmlFor="password">
+              password:
+              <FaCheck className={validPassword ? "valid" : "hide"} />
+              <FaTimes
+                className={validPassword || !password ? "hide" : "invalid"}
+              />
+            </label>
+
+            <input
+              type="text"
+              id="password"
+              autoComplete="off"
+              value={password}
+              required
+              aria-describedby="uidnote"
+              aria-invalid={validPassword ? "false" : "true"}
+              onChange={(event) => setPassword(event.target.value)}
+              onFocus={() => setPasswordFocus(true)}
+              onBlur={() => setPasswordFocus(false)}
+            />
+            <p
+              id="pwdnote"
+              className={
+                paasswordFocus && !validPassword ? "instructions" : "offscreen"
+              }
+            >
+              <FaInfoCircle />
+              <small>
+                8 to 24 characters.
+                <br />
+                Must include uppercase and lowercase letters, a number and a
+                special character.
+                <br />
+                Allowed special characters:{" "}
+                <span aria-label="exclamation mark">!</span>{" "}
+                <span aria-label="at symbol">@</span>{" "}
+                <span aria-label="hashtag">#</span>{" "}
+                <span aria-label="dollar sign">$</span>{" "}
+                <span aria-label="percent">%</span>
+              </small>
+            </p>
+          </>
         </form>
       </section>
-      <FaCheck />
-      <FaTimes />
-      <FaInfoCircle />
     </div>
   );
 };
