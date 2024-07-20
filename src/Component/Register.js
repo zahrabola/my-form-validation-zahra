@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
-import axios from "./api/axios";
+///import axios from "../api/axios";
 ///https://github.com/gitdagray/react_register_form/blob/main/src/Register.js
 
 
@@ -11,7 +11,7 @@ const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 //new - for the axios section
-const REGISTER_URL = "/register";
+//const REGISTER_URL = "/register";
 
 const Register = () => {
   //state and hooks
@@ -58,13 +58,13 @@ const Register = () => {
     setValidMatch(match);
   }, [password, matchpassword]);
 
-  ///useffect for the error message , changes the state of theruser input, password and match input inside the dependency array, then error message will clear
+  ///useffect for the error message , changes the state of the user input, password and match input inside the dependency array, then error message will clear
   useEffect(() => {
     setErrorMsg("");
   }, [user, password, matchpassword]);
 
   //handlesubmit - for beginners
-  /* const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     ////if Button enabled with JS Hack
     const v1 = USER_REGEX.test(user);
@@ -75,7 +75,12 @@ const Register = () => {
     }
     console.log(user, password);
     setSuccess(true); // success
-  };*/
+    setValidPassword(true)
+  };
+
+
+
+  /* node.js axios
 
   ///handle submit adding axios
   const handleSubmit = async (event) => {
@@ -91,7 +96,7 @@ const Register = () => {
       const response = await axios.post(
         REGISTER_URL,
         JSON.stringify({ user, password }),
-        /* JSON.stringify({user: userName, password: userPassword}) if the state name is differ and user property that backend is looking for */
+        /* JSON.stringify({user: userName, password: userPassword}) if the state name is differ and user property that backend is looking for 
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -115,7 +120,7 @@ const Register = () => {
       console.log(error);
       errorRef.current.focus()
     }
-  };
+  };  */
 
   return (
     <>
